@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <title>Poptin</title>
+
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/spectrum/1.8.0/spectrum.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/froala-editor@3.1.0/css/froala_editor.pkgd.min.css"
+      rel="stylesheet"
+    />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/spectrum/1.8.0/spectrum.min.js"></script>
+    <!-- <script src="https://cdn.ckeditor.com/ckeditor5/16.0.0/balloon-block/ckeditor.js"></script> -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/froala-editor@3.1.0/js/froala_editor.pkgd.min.js"></script> -->
+  </head>
+
+  <body>
+    <div class="container-fluid">
+      <div
+        class="modal fade"
+        id="finalModal"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+        style="z-index: 9999;"
+        data-backdrop="static"
+      >
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Final Output</h5>
+              <button
+                type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-label="Close"
+                onclick="clearModal()"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div id="final"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-7 d-flex align-items-center justify-content-center">
+          <div id="final-form">
+            <form action="" method="post" id="popup-container">
+              <div id="popup-container">
+                <div id="popup-wrapper">
+                  <div id="dragable-container">
+                    <div class="bg-wrapper">
+                      <div class="bg-ring"></div>
+                      <img
+                        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJAAAAAuCAMAAADwWGCPAAAAAXNSR0IB2cksfwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAW5QTFRFAAAAy1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1y1U1PGywkQAAAHp0Uk5TAAwQTm58gBQ2WngGdjV3JT9rByNHEwENIDBEV2Z5algzEQUVHilRY3N/ZUEtGy9KMkMPIR8LElwdLA4ZNxZ6Lm99KnUDGn4mPXIJe3RWZFRAUmJCAjhxTSRtcBdsCGAcT2FVMWcoRj46W19ZXVNeRQQnSzs5TBgrIjzMOntzAAADEElEQVR4nMWY+0PSUBTHL4IHREPQElEUUBARRDNFslDRRBRNBKwgk1JEyexlz/++PYDtwr3srmj7/rS77865n53tPjaEuiRDT7cydUlGk94ELeoFs94ImCwAfXozYLICQL/eEDJxBQKw6E0hE18gGNCbQpJQIIB7enM0ZRWBbHpzNDQIddn1JqnL0QCCIb1RBA03eeC+3iy8+qUCATzQk2TEOeoaG3dPgFyTnjHvsG9KY5Rpf8A+E5wNAU22uZlwZHR+RCugKJUE04JmQGiRiUczHE4BZZ6HWvIgFFHi6co6suRkv/ZRZ55l1jwrsQ6mY5UdCMXpgwzgMXOahVm6twagZgJ50kvlWWTPMgH0Ej1V+SYm1ik8G+w5vJ2W5E2ApKo5NmYl8mypSLENsP6M4gkDR91g3SG8R6ldFQm8fESaYu4J6VSVaJ8ERLthkrb5iAw5oj6zqCrRLumJDbLHe8UIYolWDuo3qOaDj7iE0J5Au5w2MSLjw1H8kfDhc2kMB4+yruU1poxpEtA4Q6DBv2E/ziUbISG3Jx9ddhY458S0lyJlhRcmhsH7khTpUIp6VSwR+wwdmNLo9QARh9OpTykxQkFSYPKNUnlytD4hztlnZMujjIMKNmJoWTHwLbnPSfFrfJXoMfAgc/Pyd/HYebNxoRxJrIK7Mfw97V6FaTJp7IoqAb51Wak3qwyhhCrkpA3mUasXZNt8XgkX264b7eipcKLGEttWhfdy9wazQh+YcBA65i7OhOVfh15uPYQSU/AtzvMRM/dTcs/KyMNN/MVPhpZz2SJA6zmyihgQPh/vYF6KbVZEiQxxUnZtM21fP+NbhS+YacHLF2ADWqJUYopp9SnjfV5jZh43r9iA/k0XeJ95zPyKm7daAFXxPo2YeSievMuK+5uKFkA1sc/qN3FA5TBzkj91Po2Q7zt/lNHiZ0FJeBYJhHqM/JGtIPOGuMLU4uKxmZ8ffvx/HgPXzc28eJzgZ2b5n5yfcPZLal3OafFWR8ERkVrlPriTmVstv5hPVHxX/a22fuNtr7gk/wEI2mDYM0Y/wwAAAABJRU5ErkJggg=="
+                        alt=""
+                        style="position: absolute; left: 180px; top: 50px;"
+                      />
+                      <div id="editor">
+                        <div
+                          id="editor-elements"
+                          class="draggable"
+                          style="position: relative; left: 71px; top: 115px;"
+                        >
+                          <p class="title enable-editor" dir="rtl">
+                            רוצה לקבל ממנ עדכון<br />
+                            כל פעם שיש משהו חדש?
+                          </p>
+                        </div>
+
+                        <div
+                          id="editor-inputs"
+                          class="draggable ui-draggable ui-draggable-handle"
+                          style="position: relative; left: 71px; top: 122px;"
+                        >
+                          <input
+                            dir="rtl"
+                            id="input-4o9ddxmfp"
+                            placeholder="מייל:"
+                            value=""
+                            class="form-input"
+                          />
+                        </div>
+                        <button
+                          dir="rtl"
+                          class="draggable btn btn-submit"
+                          style="position: relative; left: 71px; top: 123px;"
+                        >
+                          להרשמה
+                        </button>
+                        <p
+                          class="form-extra enable-editor draggable"
+                          dir="rtl"
+                          style="position: relative; left: 92px; top:142px;"
+                        >
+                          (ניתן להסיר את המייל מרשימת התפוצה בכל עת)
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <div class="col-md-5">
+          <button class="btn btn-success mb-2 mt-2" onclick="savePopup()">
+            Save
+          </button>
+          <div class="accordion" id="accordion">
+            <div class="card">
+              <div class="card-header" id="general-settings">
+                <h2 class="mb-0">
+                  <button
+                    class="btn btn-link"
+                    type="button"
+                    data-toggle="collapse"
+                    data-target="#collapseOne"
+                    aria-expanded="true"
+                    aria-controls="collapseOne"
+                  >
+                    General Settings
+                  </button>
+                </h2>
+              </div>
+
+              <div
+                id="collapseOne"
+                class="collapse show"
+                aria-labelledby="general-settings"
+                data-parent="#accordion"
+              >
+                <div class="card-body">
+                  <h6>Background Color</h6>
+                  <input type="text" id="picker" />
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-header" id="input-fields">
+                <h2 class="mb-0">
+                  <button
+                    class="btn btn-link collapsed"
+                    type="button"
+                    data-toggle="collapse"
+                    data-target="#collapseTwo"
+                    aria-expanded="false"
+                    aria-controls="collapseTwo"
+                  >
+                    Input Fields
+                  </button>
+                </h2>
+              </div>
+              <div
+                id="collapseTwo"
+                class="collapse"
+                aria-labelledby="input-fields"
+                data-parent="#accordion"
+              >
+                <div class="card-body">
+                  <button class="btn btn-primary mb-3" onclick="addField()">
+                    Add Field
+                  </button>
+                  <div id="fields">
+                    <div
+                      id="field-4o9ddxmfp"
+                      class="d-flex justify-content-between align-items-end"
+                    >
+                      <div class="form-group">
+                        <label for="type">Type</label
+                        ><select
+                          id="4o9ddxmfp"
+                          onchange="changeType(this)"
+                          class="form-control"
+                        >
+                          <option value="text" selected>Text</option>
+                          <option value="email">Email</option>
+                        </select>
+                      </div>
+                      <div class="form-group">
+                        <label for="placeholder">Placeholder</label
+                        ><input
+                          name="field"
+                          type="text"
+                          placeholder=""
+                          id="4o9ddxmfp"
+                          class="form-control"
+                          value="מייל:"
+                        />
+                      </div>
+                      <div class="form-group">
+                        <button
+                          onclick="removeField('4o9ddxmfp')"
+                          class="btn btn-danger"
+                        >
+                          Remove
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      function clearModal() {
+        $("#final").html("");
+      }
+      (function($) {
+        $.extend($.fn, {
+          makeCssInline: function() {
+            this.each(function(idx, el) {
+              var style = el.style;
+              var properties = [];
+              for (var property in style) {
+                if ($(this).css(property)) {
+                  properties.push(property + ":" + $(this).css(property));
+                }
+              }
+              var finalCss = properties.join(";");
+
+              this.style.cssText = finalCss + ";" + this.style.cssText;
+              $(this)
+                .children()
+                .makeCssInline();
+            });
+          }
+        });
+      })(jQuery);
+
+      $(".select").makeCssInline();
+
+      function savePopup() {
+        let popup = $("#final-form").html();
+        let popup_data = {
+          form_id: `form-${Math.random()
+            .toString(36)
+            .substr(2, 9)}`,
+          form_name: "Test",
+          form_html: popup
+        };
+
+        $.ajax({
+          type: "POST",
+          headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
+          },
+          url: "http://3.6.120.180/api/poptin",
+          data: popup_data,
+          success: function(response) {
+            $("#final").html(response);
+            $("#finalModal").modal("show");
+          }
+        });
+        // let finalpopup = $("#final-form").makeCssInline();
+        $("#final").html(popup);
+        $("#finalModal").modal("show");
+      }
+
+      function addField() {
+        let random = Math.random()
+          .toString(36)
+          .substr(2, 9);
+        let result = `<div id="field-${random}" class="d-flex justify-content-between align-items-end"><div class="form-group"><label for="type">Type</label><select id="${random}" onchange="changeType(this)" class="form-control"><option value="text">Text</option><option value="email">Email</option></select></div><div class="form-group"><label for="placeholder">Placeholder</label><input name="field" type="text" placeholder="" id="${random}" class="form-control" value=""/></div><div class="form-group"><button onclick="removeField('${random}')" class="btn btn-danger">Remove</button></div></div>`;
+        let editorResult = `<input dir="rtl" id="input-${random}" placeholder="" value="" class="draggable ui-draggable ui-draggable-handle form-input"/>`;
+        $("#fields").append(result);
+        $("#editor-inputs").append(editorResult);
+      }
+
+      $(document).on("input", function(e) {
+        $(`#input-${e.target.id}`).attr("placeholder", e.target.value);
+      });
+
+      function changeType(e) {
+        $(`#input-${e.id}`).attr("type", e.value);
+      }
+
+      function removeField(element) {
+        $(`#field-${element}`).remove();
+        $(`#input-${element}`).remove();
+      }
+
+      function addElement(type) {
+        let random = Math.random()
+          .toString(36)
+          .substr(2, 9);
+        let editorResult, result;
+        if (type === "text") {
+          editorResult = `<p class="draggable element-text" id="element-${random}">Enter Your Text</p>`;
+          result = `<input id="${random}" class="form-control" type="text" value="Enter Your Text"/>`;
+        } else if (type === "button") {
+          editorResult = "";
+        } else {
+          editorResult = "";
+        }
+        $("#editor").append(editorResult);
+        // $("#elements").append(result);
+        $(".draggable").draggable({
+          containment: "parent"
+        });
+      }
+      $(function() {
+        // var editor = new FroalaEditor('.enable-editor', {
+        //   toolbarInline: true,
+        //   toolbarVisibleWithoutSelection: true,
+        //   fontFamilySelection: true,
+        //   // dragInline: false,
+        //   fontFamily: {
+        //     "Roboto,sans-serif": "Roboto",
+        //     "Oswald,sans-serif": "Oswald",
+        //     "Montserrat,sans-serif": "Montserrat",
+        //     "'Open Sans Condensed',sans-serif": "Open Sans Condensed"
+        //   },
+        //   toolbarButtons: [
+        //     "bold",
+        //     "italic",
+        //     "textColor",
+        //     "backgroundColor",
+        //     "align",
+        //     "fontFamily",
+        //     "fontSize"
+        //   ]
+        // });
+
+        $("#fields").sortable({
+          stop: function(event, ui) {
+            console.log(event);
+          }
+        });
+
+        $(".draggable").draggable({
+          cancel: false,
+          containment: "parent"
+        });
+
+        const defaultColor = $(".bg-wrapper").css("background-color");
+
+        $("#picker").spectrum({
+          color: defaultColor ? defaultColor : "green",
+          flat: true,
+          showInput: true,
+          showAlpha: true,
+          // className: "full-spectrum",
+          showInitial: true,
+          showSelectionPalette: false,
+          maxSelectionSize: 10,
+          preferredFormat: "rgba",
+          localStorageKey: "spectrum",
+          move: function(color) {
+            // console.log();
+            $(".bg-wrapper").css(
+              "background-color",
+              `rgba(${color._r},${color._g},${color._b},${color._a})`
+            );
+          },
+          show: function() {},
+          beforeShow: function() {},
+          hide: function() {},
+          change: function() {}
+        });
+      });
+    </script>
+  </body>
+</html>
