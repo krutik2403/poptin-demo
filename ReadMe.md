@@ -11,4 +11,4 @@
 - Save
 - Reset
 - Embed Code
-- Text Editable
+- Text Editable (Froala)

@@ -28,7 +28,6 @@
         (document.getElementsByTagName("head")[0] || document.documentElement).appendChild(script_tag);
 
     } else {
-        // The jQuery version on the window is the one we want to use
         jQuery = window.jQuery;
         main();
     }
